@@ -66,6 +66,8 @@ export const userSignup = async (req, res, next) => {
         process.env.NODE_ENV === "production"
           ? process.env.DOMAIN
           : "localhost",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       signed: true,
       path: "/",
     });
@@ -125,7 +127,12 @@ export const userLogin = async (req, res, next) => {
     // Clear existing authentication
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
-      domain: "localhost",
+      domain:
+        process.env.NODE_ENV === "production"
+          ? ".tutormatematica.me"
+          : "localhost",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       signed: true,
       path: "/",
     });
@@ -135,9 +142,14 @@ export const userLogin = async (req, res, next) => {
     const expires = new Date(Date.now() + COOKIE_EXPIRES);
     res.cookie(COOKIE_NAME, token, {
       path: "/",
-      domain: "localhost",
+      domain:
+        process.env.NODE_ENV === "production"
+          ? ".tutormatematica.me"
+          : "localhost",
       expires,
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       signed: true,
     });
 
@@ -211,7 +223,12 @@ export const userLogout = async (req, res, next) => {
 
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
-      domain: "localhost",
+      domain:
+        process.env.NODE_ENV === "production"
+          ? ".tutormatematica.me"
+          : "localhost",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       signed: true,
       path: "/",
     });
