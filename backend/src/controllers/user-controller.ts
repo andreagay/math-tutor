@@ -81,6 +81,8 @@ export const userSignup = async (req, res, next) => {
           : "localhost",
       expires,
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       signed: true,
     });
 
