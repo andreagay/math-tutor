@@ -7,12 +7,12 @@
   "scripts": {
     "install-backend": "cd backend && npm install",
     "install-frontend": "cd frontend && npm install",
-    "build-backend": "cd backend && npm install typescript -g && npm run build",
+    "build-backend": "cd backend && npm install typescript -g && npm rebuild bcrypt --build-from-source && npm run build",
     "build-frontend": "cd frontend && npm run build",
     "start": "cd backend && npm start",
     "heroku-postbuild": "npm run install-backend && npm run install-frontend && npm run build-backend && npm run build-frontend"
   },
   "dependencies": {
-    "typescript": "^5.1.6"
+    "typescript": "~5.6.2"
   }
 }
