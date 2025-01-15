@@ -12,16 +12,26 @@ const app = express();
 //Middleware
 
 //CORS
+const allowedOrigins = [
+  "https://tutormatematica.me",
+  "https://www.tutormatematica.me",
+  "https://tutormatematica.me/api/v1",
+  "https://www.tutormatematica.me/api/v1",
+  "http://tutormatematica.me",
+  "http://www.tutormatematica.me",
+  "http://tutormatematica.me/api/v1",
+  "http://www.tutormatematica.me/api/v1",
+  process.env.FRONTEND_URL || "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: "*",
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   })
 );
-
-app.options("*", cors());
 
 //Security
 // Security middleware
