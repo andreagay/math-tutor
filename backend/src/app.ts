@@ -21,6 +21,7 @@ const allowedOrigins = [
   "http://www.tutormatematica.me",
   "http://tutormatematica.me/api/v1",
   "http://www.tutormatematica.me/api/v1",
+  "https://tutormatematica.me/api/v1/users/auth-status",
   process.env.FRONTEND_URL || "http://localhost:5173",
 ];
 
