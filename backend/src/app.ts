@@ -18,7 +18,29 @@ app.use(
 );
 
 //Security
-app.use(helmet());
+// Security middleware
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        connectSrc: [
+          "'self'",
+          process.env.FRONTEND_URL || "http://localhost:5173",
+        ],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+        fontSrc: ["'self'", "fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:", "https:"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: {
+      policy:
+        process.env.NODE_ENV === "production" ? "same-site" : "cross-origin",
+    },
+  })
+);
 
 //development logging
 if (process.env.NODE_ENV === "development") {
