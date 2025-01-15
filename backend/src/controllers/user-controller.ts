@@ -62,7 +62,10 @@ export const userSignup = async (req, res, next) => {
     // Clear any existing authentication cookies
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
-      domain: "localhost",
+      domain:
+        process.env.NODE_ENV === "production"
+          ? process.env.DOMAIN
+          : "localhost",
       signed: true,
       path: "/",
     });
@@ -72,7 +75,10 @@ export const userSignup = async (req, res, next) => {
     const expires = new Date(Date.now() + COOKIE_EXPIRES);
     res.cookie(COOKIE_NAME, token, {
       path: "/",
-      domain: "localhost",
+      domain:
+        process.env.NODE_ENV === "production"
+          ? process.env.DOMAIN
+          : "localhost",
       expires,
       httpOnly: true,
       signed: true,
