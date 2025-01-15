@@ -9,7 +9,9 @@ import axios from "axios";
 import { Toaster } from "react-hot-toast";
 
 axios.defaults.baseURL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000/api/v1";
+  process.env.NODE_ENV === "production"
+    ? "https://tutormatematica.me/api/v1"
+    : "http://localhost:4000/api/v1";
 axios.defaults.withCredentials = true;
 
 const theme = createTheme({
