@@ -15,7 +15,7 @@
     "install-frontend": "cd frontend && npm install && cd ..",
     "build-backend": "cd backend && npm run build && cd ..",
     "build-frontend": "cd frontend && npm run build && cd ..",
-    "start": "cd backend && npm start",
+    "start": "node dist/index.js",
     "heroku-postbuild": "npm run install-backend && npm run install-frontend && npm run build-backend && npm run build-frontend"
   },
   "keywords": [],
