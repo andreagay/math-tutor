@@ -39,6 +39,9 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposedHeaders: ["Set-Cookie"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 
@@ -64,8 +67,7 @@ app.use(
     },
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: {
-      policy:
-        process.env.NODE_ENV === "production" ? "same-site" : "cross-origin",
+      policy: "cross-origin",
     },
   })
 );
@@ -80,6 +82,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //Routes
+app.options("*", cors());
 app.use("/api/v1", appRouter);
 
 export default app;
