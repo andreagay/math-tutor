@@ -15,14 +15,9 @@ const app = express();
 const allowedOrigins = [
   "https://tutormatematica.me",
   "https://www.tutormatematica.me",
-  "https://tutormatematica.me/api/v1",
-  "https://www.tutormatematica.me/api/v1",
-  "http://tutormatematica.me",
-  "http://www.tutormatematica.me",
-  "http://tutormatematica.me/api/v1",
-  "http://www.tutormatematica.me/api/v1",
-  "https://tutormatematica.me/api/v1/users/auth-status",
-  process.env.FRONTEND_URL || "http://localhost:5173",
+  "https://math-tutor-10a31591729d.herokuapp.com",
+  process.env.FRONTEND_URL,
+  "http://localhost:5173",
 ];
 
 app.use(

@@ -17,6 +17,15 @@ import bcrypt from "bcrypt";
 import { createToken } from "../utils/token-manager.js";
 import { COOKIE_NAME, COOKIE_EXPIRES } from "../utils/constants.js";
 
+const cookieOptions = {
+  httpOnly: true,
+  domain: process.env.DOMAIN,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  signed: true,
+  path: "/",
+};
+
 /**
  * Retrieves all users from the database
  * @param {Request} req - Express request object
@@ -60,33 +69,12 @@ export const userSignup = async (req, res, next) => {
     await user.save();
 
     // Clear any existing authentication cookies
-    res.clearCookie(COOKIE_NAME, {
-      httpOnly: true,
-      domain:
-        process.env.NODE_ENV === "production"
-          ? process.env.DOMAIN
-          : "localhost",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      signed: true,
-      path: "/",
-    });
+    res.clearCookie(COOKIE_NAME, cookieOptions);
 
     // Generate new authentication token and set cookie
     const token = createToken(user._id.toString(), user.email, "7d");
     const expires = new Date(Date.now() + COOKIE_EXPIRES);
-    res.cookie(COOKIE_NAME, token, {
-      path: "/",
-      domain:
-        process.env.NODE_ENV === "production"
-          ? process.env.DOMAIN
-          : "localhost",
-      expires,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      signed: true,
-    });
+    res.cookie(COOKIE_NAME, token, { ...cookieOptions, expires });
 
     // Return success response with user details
     return res
@@ -125,33 +113,12 @@ export const userLogin = async (req, res, next) => {
     }
 
     // Clear existing authentication
-    res.clearCookie(COOKIE_NAME, {
-      httpOnly: true,
-      domain:
-        process.env.NODE_ENV === "production"
-          ? ".tutormatematica.me"
-          : "localhost",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      signed: true,
-      path: "/",
-    });
+    res.clearCookie(COOKIE_NAME, cookieOptions);
 
     // Set new authentication token
     const token = createToken(user._id.toString(), user.email, "7d");
     const expires = new Date(Date.now() + COOKIE_EXPIRES);
-    res.cookie(COOKIE_NAME, token, {
-      path: "/",
-      domain:
-        process.env.NODE_ENV === "production"
-          ? ".tutormatematica.me"
-          : "localhost",
-      expires,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      signed: true,
-    });
+    res.cookie(COOKIE_NAME, token, { ...cookieOptions, expires });
 
     // Return success response
     return res
@@ -221,17 +188,7 @@ export const userLogout = async (req, res, next) => {
       return res.status(401).json({ message: "Permission did not match" });
     }
 
-    res.clearCookie(COOKIE_NAME, {
-      httpOnly: true,
-      domain:
-        process.env.NODE_ENV === "production"
-          ? ".tutormatematica.me"
-          : "localhost",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      signed: true,
-      path: "/",
-    });
+    res.clearCookie(COOKIE_NAME, cookieOptions);
 
     // Return success response
     return res

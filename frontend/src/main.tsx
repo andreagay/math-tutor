@@ -10,7 +10,7 @@ import { Toaster } from "react-hot-toast";
 
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production"
-    ? "https://tutormatematica.me/api/v1"
+    ? "https://math-tutor-10a31591729d.herokuapp.com/api/v1"
     : "http://localhost:4000/api/v1";
 axios.defaults.withCredentials = true;
 
