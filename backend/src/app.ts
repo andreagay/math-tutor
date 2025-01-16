@@ -52,6 +52,7 @@ app.use(
           "https://tutormatematica.me",
           "https://www.tutormatematica.me",
           "https://tutormatematica.me/api/v1",
+          "https://math-tutor-10a31591729d.herokuapp.com",
           process.env.FRONTEND_URL || "http://localhost:5173",
         ],
         scriptSrc: ["'self'", "'unsafe-inline'"],
