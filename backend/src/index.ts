@@ -2,18 +2,23 @@ import express from "express";
 import path from "path";
 import app from "./app.js";
 import { connectToDatabase } from "./db/connection.js";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Connection and listeners
 const PORT = process.env.PORT || 4000;
 
 // Serve static frontend files in production
 if (process.env.NODE_ENV === "production") {
-  // Serve static files from frontend build
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  // Serve static frontend files
+  const frontendBuildPath = path.join(__dirname, "../../frontend/dist");
+  app.use(express.static(frontendBuildPath));
 
   // Handle React routing, return all requests to React app
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+    res.sendFile(path.join(frontendBuildPath, "index.html"));
   });
 }
 
@@ -29,6 +34,18 @@ connectToDatabase()
     console.error("Database connection failed:", error);
     process.exit(1);
   });
+
+// Handle uncaught exceptions
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
+  process.exit(1);
+});
+
+// Handle unhandled promise rejections
+process.on("unhandledRejection", (error) => {
+  console.error("Unhandled Rejection:", error);
+  process.exit(1);
+});
 
 /**
  *const path = require("path");
