@@ -1,24 +1,19 @@
 import express from "express";
 import path from "path";
-import { fileURLToPath } from "url";
 import app from "./app.js";
 import { connectToDatabase } from "./db/connection.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Connection and listeners
 const PORT = process.env.PORT || 4000;
 
 // Serve static frontend files in production
 if (process.env.NODE_ENV === "production") {
-  // Serve static files from frontend build directory
-  const frontendBuildPath = path.join(__dirname, "../../frontend/dist");
-  app.use(express.static(frontendBuildPath));
+  // Serve static files from frontend build
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-  // Handle client-side routing by serving index.html for all routes
+  // Handle React routing, return all requests to React app
   app.get("*", (req, res) => {
-    res.sendFile(path.join(frontendBuildPath, "index.html"));
+    res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   });
 }
 
@@ -34,3 +29,21 @@ connectToDatabase()
     console.error("Database connection failed:", error);
     process.exit(1);
   });
+
+/**
+ *const path = require("path");
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
+
+// Set port and start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+*/
