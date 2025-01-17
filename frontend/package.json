@@ -13,6 +13,11 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.3.1",
+    "@types/react-syntax-highlighter": "^15.5.11",
+    "@types/react-dom": "^18.2.0",
+    "@types/react": "^18.2.0",
+    "@types/node": "^20.11.19",
+    "@vitejs/plugin-react-swc": "^3.5.0",
     "axios": "^1.7.9",
     "helmet": "^8.0.0",
     "react": "^18.3.1",
@@ -22,11 +27,7 @@
     "react-router-dom": "^7.1.1",
     "react-syntax-highlighter": "^15.5.0",
     "react-type-animation": "^3.2.0",
-    "@types/react-syntax-highlighter": "^15.5.11",
-    "@types/react-dom": "^18.2.0",
-    "@types/node": "^20.11.19",
     "vite": "^5.1.4",
-    "@vitejs/plugin-react-swc": "^3.5.0",
     "typescript": "^5.2.2"
   },
   "devDependencies": {
