@@ -54,7 +54,11 @@ export const generateChatCompletion = async (
   }
 };
 
-export const sendChatHistory = async (req, res, next) => {
+export const sendChatHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     // Find user by ID from JWT data
     const user = await User.findById(res.locals.jwtData.id);
@@ -79,7 +83,11 @@ export const sendChatHistory = async (req, res, next) => {
   }
 };
 
-export const clearChatHistory = async (req, res, next) => {
+export const clearChatHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     // Find user by ID from JWT data
     const user = await User.findById(res.locals.jwtData.id);

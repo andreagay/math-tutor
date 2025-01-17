@@ -16,10 +16,11 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import { createToken } from "../utils/token-manager.js";
 import { COOKIE_NAME, COOKIE_EXPIRES } from "../utils/constants.js";
+import { NextFunction, Request, Response } from "express";
 
 const cookieOptions = {
   httpOnly: true,
-  //domain: process.env.DOMAIN,
+  domain: process.env.DOMAIN,
   signed: true,
   path: "/",
   sameSite: "none",
@@ -33,7 +34,11 @@ const cookieOptions = {
  * @param {NextFunction} next - Express next middleware function
  * @returns {Promise<Response>} JSON response with users array
  */
-export const getAllUsers = async (req, res, next) => {
+export const getAllUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const users = await User.find();
     return res.status(200).json({ message: "OK", users });
@@ -52,7 +57,11 @@ export const getAllUsers = async (req, res, next) => {
  * @param {NextFunction} next - Express next middleware function
  * @returns {Promise<Response>} JSON response with user details
  */
-export const userSignup = async (req, res, next) => {
+export const userSignup = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     // Extract user details from request body
     const { name, email, password } = req.body;
@@ -69,13 +78,28 @@ export const userSignup = async (req, res, next) => {
     await user.save();
 
     // Clear any existing authentication cookies
-    res.clearCookie(COOKIE_NAME, cookieOptions);
+    res.clearCookie(COOKIE_NAME, {
+      httpOnly: true,
+      domain: process.env.DOMAIN,
+      signed: true,
+      path: "/",
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production", //verify use of HTTPS if in production);
+    });
 
     // Generate new authentication token and set cookie
     const token = createToken(user._id.toString(), user.email, "7d");
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
-    res.cookie(COOKIE_NAME, token, { ...cookieOptions, expires });
+    res.cookie(COOKIE_NAME, token, {
+      httpOnly: true,
+      domain: process.env.DOMAIN,
+      signed: true,
+      path: "/",
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production", //verify use of HTTPS if in production
+      expires,
+    });
 
     // Return success response with user details
     return res
@@ -96,7 +120,11 @@ export const userSignup = async (req, res, next) => {
  * @param {NextFunction} next - Express next middleware function
  * @returns {Promise<Response>} JSON response with user details
  */
-export const userLogin = async (req, res, next) => {
+export const userLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     // Extract login credentials
     const { email, password } = req.body;
@@ -114,13 +142,28 @@ export const userLogin = async (req, res, next) => {
     }
 
     // Clear existing authentication
-    res.clearCookie(COOKIE_NAME, cookieOptions);
+    res.clearCookie(COOKIE_NAME, {
+      httpOnly: true,
+      domain: process.env.DOMAIN,
+      signed: true,
+      path: "/",
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production", //verify use of HTTPS if in production
+    });
 
     // Set new authentication token
     const token = createToken(user._id.toString(), user.email, "7d");
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
-    res.cookie(COOKIE_NAME, token, { ...cookieOptions, expires });
+    res.cookie(COOKIE_NAME, token, {
+      httpOnly: true,
+      domain: process.env.DOMAIN,
+      signed: true,
+      path: "/",
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production", //verify use of HTTPS if in production
+      expires,
+    });
 
     // Return success response
     return res
@@ -141,7 +184,11 @@ export const userLogin = async (req, res, next) => {
  * @param {NextFunction} next - Express next middleware function
  * @returns {Promise<Response>} JSON response with user details
  */
-export const verifyUser = async (req, res, next) => {
+export const verifyUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     //DEBUGGER: check cookies
     console.log("Cookies in verifyUser:", req.cookies);
@@ -180,7 +227,11 @@ export const verifyUser = async (req, res, next) => {
  * @param {NextFunction} next - Express next middleware function
  * @returns {Promise<Response>} JSON response with user details
  */
-export const userLogout = async (req, res, next) => {
+export const userLogout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     // Find user by ID from JWT data
     const user = await User.findById(res.locals.jwtData.id);
@@ -195,7 +246,14 @@ export const userLogout = async (req, res, next) => {
       return res.status(401).json({ message: "Permission did not match" });
     }
 
-    res.clearCookie(COOKIE_NAME, cookieOptions);
+    res.clearCookie(COOKIE_NAME, {
+      httpOnly: true,
+      domain: process.env.DOMAIN,
+      signed: true,
+      path: "/",
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production", //verify use of HTTPS if in production
+    });
 
     // Return success response
     return res
