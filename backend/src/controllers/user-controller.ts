@@ -73,7 +73,8 @@ export const userSignup = async (req, res, next) => {
 
     // Generate new authentication token and set cookie
     const token = createToken(user._id.toString(), user.email, "7d");
-    const expires = new Date(Date.now() + COOKIE_EXPIRES);
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
     res.cookie(COOKIE_NAME, token, { ...cookieOptions, expires });
 
     // Return success response with user details
@@ -117,7 +118,8 @@ export const userLogin = async (req, res, next) => {
 
     // Set new authentication token
     const token = createToken(user._id.toString(), user.email, "7d");
-    const expires = new Date(Date.now() + COOKIE_EXPIRES);
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
     res.cookie(COOKIE_NAME, token, { ...cookieOptions, expires });
 
     // Return success response
