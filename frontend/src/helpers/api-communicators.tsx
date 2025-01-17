@@ -46,7 +46,10 @@ export const checkAuthStatus = async () => {
     const data = await response.data;
     return data;
   } catch (error) {
-    console.log("Auth Status Error:", error); //DEBUGGER
+    console.error("Auth Status Error Details:", {
+      cookies: document.cookie,
+      error: error, //DEBUGGER
+    }); //DEBUGGER
     // Return null instead of throwing error for 401
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       return null;

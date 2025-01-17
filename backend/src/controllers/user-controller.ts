@@ -20,8 +20,6 @@ import { COOKIE_NAME, COOKIE_EXPIRES } from "../utils/constants.js";
 const cookieOptions = {
   httpOnly: true,
   domain: process.env.DOMAIN,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   signed: true,
   path: "/",
 };
@@ -141,6 +139,11 @@ export const userLogin = async (req, res, next) => {
  */
 export const verifyUser = async (req, res, next) => {
   try {
+    //DEBUGGER: check cookies
+    console.log("Cookies in verifyUser:", req.cookies);
+    console.log("Signed Cookies in verifyUser:", req.signedCookies);
+    console.log("JWT Token in verifyUser:", req.signedCookies[COOKIE_NAME]);
+
     // Find user by ID from JWT data
     const user = await User.findById(res.locals.jwtData.id);
     if (!user) {
