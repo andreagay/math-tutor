@@ -22,6 +22,8 @@ const cookieOptions = {
   domain: process.env.DOMAIN,
   signed: true,
   path: "/",
+  sameSite: "none",
+  secure: process.env.NODE_ENV === "production", //verify use of HTTPS if in production
 };
 
 /**
