@@ -3,13 +3,31 @@
  */
 
 import { useState, useEffect, useContext, createContext } from "react";
-import { User, UserAuth } from "./types";
 import {
   loginUser,
   checkAuthStatus,
   logoutUser,
   signupUser,
 } from "../helpers/api-communicators";
+
+/**
+ * Represents a user's basic information
+ */
+export type User = {
+  name: string;
+  email: string;
+};
+
+/**
+ * Represents the authentication context state and methods
+ */
+export type UserAuth = {
+  isLoggedIn: boolean;
+  user: User | null;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+};
 
 const AuthContext = createContext<UserAuth | null>(null);
 
