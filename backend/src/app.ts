@@ -5,6 +5,7 @@ import morgan from "morgan";
 import cors from "cors";
 import appRouter from "./routes/index.js";
 import helmet from "helmet";
+import { COOKIE_NAME } from "./utils/constants.js";
 config();
 
 const app = express();
@@ -71,6 +72,14 @@ app.use(
 //Body parser
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
+
+//DEBUGGER: check cookies
+app.use((req, res, next) => {
+  console.log("Cookies:", req.cookies);
+  console.log("Signed Cookies:", req.signedCookies);
+  console.log("JWT Token:", req.signedCookies[COOKIE_NAME]);
+  next();
+});
 
 //development logging
 if (process.env.NODE_ENV === "development") {
