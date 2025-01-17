@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { COOKIE_NAME } from "./constants.js";
-
+import { Request, Response, NextFunction } from "express";
 /**
  * Creates a JWT token with user credentials
  * @param {string} id - The user's unique identifier
@@ -21,7 +21,11 @@ export const createToken = (id: string, email: string, expiresIn: string) => {
  * @param {NextFunction} next - Express next middleware function
  * @returns {Promise<void>} Promise that resolves when token is verified
  */
-export const verifyToken = async (req, res, next) => {
+export const verifyToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // Extract token from signed cookies
   const token = req.signedCookies[`${COOKIE_NAME}`];
 

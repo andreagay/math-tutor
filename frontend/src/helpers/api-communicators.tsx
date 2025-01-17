@@ -39,17 +39,19 @@ export const signupUser = async (
 export const checkAuthStatus = async () => {
   try {
     const response = await axios.get("/users/auth-status");
-    console.log("Auth Status Response:", response); //DEBUGGER
+    // console.log("Auth Status Response:", response); //DEBUGGER
+
     if (response.status !== 200) {
       throw new Error("Failed to check auth status");
     }
     const data = await response.data;
     return data;
   } catch (error) {
-    console.error("Auth Status Error Details:", {
-      cookies: document.cookie,
-      error: error, //DEBUGGER
-    }); //DEBUGGER
+    // console.error("Auth Status Error Details:", {
+    //   cookies: document.cookie,
+    //   error: error, //DEBUGGER
+    // });
+
     // Return null instead of throwing error for 401
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       return null;

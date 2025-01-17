@@ -18,15 +18,6 @@ import { createToken } from "../utils/token-manager.js";
 import { COOKIE_NAME, COOKIE_EXPIRES } from "../utils/constants.js";
 import { NextFunction, Request, Response } from "express";
 
-const cookieOptions = {
-  httpOnly: true,
-  domain: process.env.DOMAIN,
-  signed: true,
-  path: "/",
-  sameSite: "none",
-  secure: process.env.NODE_ENV === "production", //verify use of HTTPS if in production
-};
-
 /**
  * Retrieves all users from the database
  * @param {Request} req - Express request object
@@ -104,7 +95,7 @@ export const userSignup = async (
     // Return success response with user details
     return res
       .status(200)
-      .json({ message: "OK", name: user.name, email: user.email });
+      .json({ message: "OK signup", name: user.name, email: user.email });
   } catch (error) {
     console.log(error);
     return res
@@ -168,7 +159,7 @@ export const userLogin = async (
     // Return success response
     return res
       .status(200)
-      .json({ message: "OK", name: user.name, email: user.email });
+      .json({ message: "OK login", name: user.name, email: user.email });
   } catch (error) {
     console.log(error);
     return res
