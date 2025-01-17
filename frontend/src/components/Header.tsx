@@ -1,9 +1,8 @@
 //import React from "react";
 import { AppBar, Toolbar } from "@mui/material";
 import Logo from "./shared/Logo";
-import { useAuth } from "../context/useAuth";
 import NavigationLink from "./shared/NavigationLink";
-
+import { useAuth } from "../context/AuthProvider";
 export default function Header() {
   const auth = useAuth();
 

@@ -2,8 +2,7 @@
  * @fileoverview Authentication context provider and related types for managing user authentication state
  */
 
-import { useState, useEffect } from "react";
-import { AuthContext } from "./auth-context";
+import { useState, useEffect, useContext, createContext } from "react";
 import { User, UserAuth } from "./types";
 import {
   loginUser,
@@ -11,6 +10,8 @@ import {
   logoutUser,
   signupUser,
 } from "../helpers/api-communicators";
+
+const AuthContext = createContext<UserAuth | null>(null);
 
 /**
  * Authentication Provider Component
@@ -58,7 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     window.location.reload();
   };
 
-  const value: UserAuth = {
+  const value = {
     user,
     isLoggedIn,
     login,
@@ -68,3 +69,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+/**
+ * Custom hook to access authentication context
+ * @returns {UserAuth} Authentication context value
+ * @throws {Error} If used outside of AuthProvider
+ */
+export const useAuth = () => useContext(AuthContext);
