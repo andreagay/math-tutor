@@ -4,7 +4,7 @@ import { IoIosLogIn } from "react-icons/io";
 import { toast } from "react-hot-toast";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/useAuth";
+import { useAuth } from "../context/AuthProvider";
 
 const Signup = () => {
   const auth = useAuth();
