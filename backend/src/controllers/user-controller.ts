@@ -19,7 +19,7 @@ import { COOKIE_NAME, COOKIE_EXPIRES } from "../utils/constants.js";
 
 const cookieOptions = {
   httpOnly: true,
-  domain: process.env.DOMAIN,
+  //domain: process.env.DOMAIN,
   signed: true,
   path: "/",
   sameSite: "none",
